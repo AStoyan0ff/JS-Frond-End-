@@ -1,6 +1,11 @@
+/**
+ * @param {string} word 
+ * @param {string} text 
+ */
+
 function srtSub(word, text) {
 
-    let words = text.split(' ');
+    const words = text.split(' ');
     let isFound = false;
 
     for (let w of words) {

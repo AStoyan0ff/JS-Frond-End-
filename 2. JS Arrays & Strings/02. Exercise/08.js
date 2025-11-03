@@ -1,5 +1,7 @@
 function pascalCase(input) {
 
+    //! RegEx -> const patternSplit = /(?<!^)(?=[A-Z])/;
+
     let arrWords = [];
     let currWord = input[0];
 

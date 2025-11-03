@@ -1,6 +1,6 @@
 function sortNumbers(array) {
 
-    array.sort((a, b) => a - b); // сортира масива във възходящ ред
+    array.sort((a, b) => a - b); // сортира масива във нарастващ 
     let result = [];
 
     while (array.length > 0) {
