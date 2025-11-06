@@ -1,17 +1,17 @@
-function perfectNum(N) {
+function perfectNum(number) {
 
     let result = 0;
 
-    for (let pos = 1; pos < N; pos++) 
-        if (N % pos === 0) result += pos;
+    for (let pos = 1; pos < number; pos++) 
+        if (number % pos === 0) result += pos;
 
-    if (result === N) 
-        console.log("We have a perfect number!");
+        console.log(result === number 
 
-    else 
-        console.log("It's not so perfect.");
+            ? "We have a perfect number!" 
+            : "It's not so perfect.");
+    
 }
-
+perfectNum(81);
 perfectNum(6);
 perfectNum(28);
 perfectNum(1236498);

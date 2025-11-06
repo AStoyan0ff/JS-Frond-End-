@@ -1,19 +1,16 @@
-function loadBar(num) {
+function loadBar(percent) {
+   
+    const load = percent / 10; 
+    const statusBar = '%'.repeat(load) + '.'.repeat(10 - load);
 
-    // изчислява колко % трябва да се покажат 
-    const load = num / 10; 
-
-    // създава лента така че дължината да е винаги 10 [%%%%%.....]
-    const bar = '%'.repeat(load) + '.'.repeat(10 - load);
-
-    if (num === 100) {
+    if (percent === 100) {
 
         console.log("100% Complete!");
-        console.log(`[${bar}]`);
+        console.log(`[${statusBar}]`);
     }
     else {
 
-        console.log(`${num}% [${bar}]`);
+        console.log(`${percent}% [${statusBar}]`);
         console.log("Still loading...");
     }
 }
