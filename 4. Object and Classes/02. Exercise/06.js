@@ -20,7 +20,7 @@ function wordTracker(input) {
         if (word) word.cnt++;
     }
     
-    wordsArr.sort((a, b) => b.cnt - a.cnt);
+    wordsArr.sort((x, y) => y.cnt - x.cnt);
    
     for (let w of wordsArr) {
         console.log(`${w.name} - ${w.cnt}`);
