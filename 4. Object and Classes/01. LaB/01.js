@@ -9,5 +9,5 @@ function getPerson(firstName, lastName, age) {
 
     return person;
 }
+console.log(getPerson("Peter", "Pan", 20));
 
-getPerson("Peter", "Pan", 20);
