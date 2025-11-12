@@ -2,7 +2,7 @@ function solve() {
 
   let text = document.getElementById("text").value.toLowerCase();
   let convention = document.getElementById("naming-convention").value;
-  let words = text.split(' ').filter(x => x !== ''); // има допълнителни интервали
+  let words = text.split(' ').filter(x => x !== ''); // допълнителни интервали
   let result = '';
 
   if (convention === 'Camel Case') {
