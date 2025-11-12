@@ -10,6 +10,7 @@ function storeProvision(stock, order) {
             let quantity = Number(arrs[pos + 1]);
 
             if (store.hasOwnProperty(product)) store[product] += quantity;
+            // if (!(name in product)) store[product] = 0;
             else store[product] = quantity;
         }
     }

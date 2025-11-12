@@ -14,7 +14,7 @@ function registerHeros(input) {
     for (const element of input) {
 
         let [name, level, items] = element.split(' / ');
-        // тернарен оператор директно в новия герой ;) -> работи...
+        
         let hero = new Hero(name, level, items 
             ? items.split(', ') 
             : []

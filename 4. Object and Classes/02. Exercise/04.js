@@ -1,4 +1,4 @@
-function movies(input) { // по-четимо е с input от колкото с arr (според мен) =)
+function movies(input) { 
 
     let movies = [];
 

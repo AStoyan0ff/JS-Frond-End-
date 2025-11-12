@@ -6,7 +6,7 @@ function makeDictionary(inp) {
 
         const object = JSON.parse(element);
         const [term, deffinition] = Object.entries(object)[0];
-
+        // Object.assign(dictionary, obj);
         dictionary[term] = deffinition;
     }
 
