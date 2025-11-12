@@ -29,8 +29,6 @@ function songs(input) {
     }
 }
 
-console.log('----------------'); 
-
 songs([
     
     3,
