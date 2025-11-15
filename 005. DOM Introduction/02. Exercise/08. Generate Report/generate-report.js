@@ -11,9 +11,9 @@ function solve() {
     let result = [];
 
    
-    for (let i = 0; i < rows.length; i++) {
+    for (let pos = 0; pos < rows.length; pos++) {
 
-        let cells = rows[i].querySelectorAll('td');
+        let cells = rows[pos].querySelectorAll('td');
         let object = {};
        
         for (let idx = 0; idx < cols.length; idx++) {
