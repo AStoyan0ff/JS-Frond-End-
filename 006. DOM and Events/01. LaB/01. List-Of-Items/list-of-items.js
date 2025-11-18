@@ -7,7 +7,7 @@ function addItem() {
     const newLiItems = document.createElement('li'); 
 
     newLiItems.textContent = currItems;
-    getItems.append(newLiItems); 
+    getItems.appendChild(newLiItems); 
 }
 
 /**
@@ -21,5 +21,5 @@ function addItem() {
  *  6. Взимаме всички 'li' елементи и добавяме към тях новият 'li' елемент 
  *  -----------------------------------------------------------------------------
  *  7. crеateElement() -> създава НОВ елемент в DOM дървото 
- *  8. append() или appendChild() -> добавят елемент в края на колекцията
+ *  8. appendChild() -> добавят елемент в края на колекцията
  */
