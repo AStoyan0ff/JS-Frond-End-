@@ -53,13 +53,13 @@ async function getInfo() {
 
     try {
 
-        const response = await fetch(URL);
+        const res = await fetch(URL);
 
-        if (!response.ok) {
+        if (!res.ok) {
             throw new Error('Invalid request');
         }
 
-        const data = await response.json();
+        const data = await res.json();
         stopNameDiv.textContent = data.name;
         
         for (let busId in data.buses) {
