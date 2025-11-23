@@ -34,15 +34,15 @@ function solution(input) {
             } else {
                 console.log(`${name} cannot perform the skill: ${skill}.`);
             }
-        }
-        
-        else if (cmd === "Transfer") {
+
+        } else if (cmd === "Transfer") {
 
             let newSection = parts[2];
             astronauts[name].section = newSection;
             console.log(`${name} has been transferred to: ${newSection}`);
 
         } else if (cmd === "Learn Skill") {
+            
             let newSkill = parts[2];
 
             if (astronauts[name].skills.includes(newSkill)) {
