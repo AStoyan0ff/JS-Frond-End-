@@ -1,4 +1,8 @@
 function loadCommits() {
-    // Try it with Fetch API
-    console.log('TODO...');
+    
+    const userInput = document.getElementById('username');
+    const repoInput = document.getElementById('repo');
+    const ulInput = document.getElementById('commits');
+
+    
 }
