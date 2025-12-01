@@ -5,7 +5,7 @@ function loadRepos() {
 	repoUl.innerHTML = '';
 
 	const user = userInput.value.trim();
-	const URL = `https://api.github.com/users/${username}/repos`;
+	const URL = `https://api.github.com/users/${user}/repos`;
 
 	fetch(URL) 
 		.then(res => { 
