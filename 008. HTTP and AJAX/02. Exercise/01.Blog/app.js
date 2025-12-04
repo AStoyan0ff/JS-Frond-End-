@@ -9,9 +9,14 @@ function attachEvents() {
     const postURL = 'http://localhost:3030/jsonstore/blog/posts';
     const commentURL = 'http://localhost:3030/jsonstore/blog/comments';
 
+    // loadBtn.addEventListener('click', async () => {
+    //          await fetch(postURL)
+    //     })
+
     async function loadPost() {
         const select = document.getElementById('posts');
-        select.innerHTML = '';
+        select.replaceChildren();
+        //select.innerHTML = '';
 
         const res = await fetch(postURL);
         const data = await res.json();
@@ -31,7 +36,8 @@ function attachEvents() {
         const postBody = document.getElementById('post-body');
         const postComments = document.getElementById('post-comments');
 
-        postComments.innerHTML = '';
+        postComments.replaceChildren();
+        //postComments.innerHTML = '';
 
         const selectID = document.getElementById('posts').value;
         const postRes = await fetch(postURL);
