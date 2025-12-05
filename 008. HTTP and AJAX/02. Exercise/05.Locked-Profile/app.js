@@ -1,87 +1,70 @@
-function lockedProfile() {
-    loadProfiles();
-}
+async function lockedProfile() {
 
-async function loadProfiles() {
-    const main = document.getElementById("main");
+    const main = document.getElementById('main');
+    main.replaceChildren();
 
-    const res = await fetch("http://localhost:3030/jsonstore/advanced/profiles");
-    const profiles = await res.json();
+    const URL = 'http://localhost:3030/jsonstore/advanced/profiles';
 
-    let idx = 0;
+    const res = await fetch(URL);
+    const data = await res.json();
 
-    Object.values(profiles).forEach(profile => {
-        idx++;
-
-        const container = el("div", { className: "profile" });
-
-        container.append(
-            el("img", { src: "./icon-profile.png", className: "userIcon" }),
-            el("label", {}, "Lock"),
-            el("input", { type: "radio", name: `user${idx}Locked`, value: "lock", checked: true }),
-            el("label", {}, "Unlock"),
-            el("input", { type: "radio", name: `user${idx}Locked`, value: "unlock" }),
-            el("hr"),
-            el("label", {}, "Username"),
-            el("input", {
-                
-                type: "text",
-                value: profile.username,
-                disabled: true,
-                readOnly: true
-            })
-        );
-       
-        const hidden = el("div", { id: `user${idx}HiddenFields`, style: "display: none" },
-            el("label", {}, "Email:"),
-            el("input", {
-
-                type: "email",
-                value: profile.email,
-                disabled: true,
-                readOnly: true
-            }),
-            el("label", {}, "Age:"),
-            el("input", {
-
-                type: "number",
-                value: profile.age,
-                disabled: true,
-                readOnly: true
-            })
-        );
-
-        container.appendChild(hidden);
-       
-        const btn = el("button", { disabled: true }, "Show more");
-        container.appendChild(btn);
-
-        const [lockRadio, unlockRadio] = container.querySelectorAll(`input[name="user${idx}Locked"]`);
-
-        lockRadio.addEventListener("change", () => (btn.disabled = true));
-        unlockRadio.addEventListener("change", () => (btn.disabled = false));
-
-        let expanded = false;
-
-        btn.addEventListener("click", () => {
-
-            expanded = !expanded;
-            hidden.style.display = expanded ? "block" : "none";
-            btn.textContent = expanded ? "Hide it" : "Show more";
-        });
-
-        main.appendChild(container);
+    Object.values(data).forEach((user, idx) => {
+        main.appendChild(createProfile(user, idx + 1));
     });
 }
 
-function el(type, props = {}, ...content) {
+function createProfile(user, idx) {
 
-    const element = document.createElement(type);
-    Object.assign(element, props);
+    const div = document.createElement('div');
+    div.className = 'profile';
 
-    for (const item of content) {
-        element.append(item instanceof Node ? item : document.createTextNode(item));
-    }
+    div.innerHTML = `
+        <img src="./iconProfile2.png" class="userIcon">
+        <label>Lock</label>
+        <input type="radio" name="user${idx}Locked" value="lock" checked>
+        <label>Unlock</label>
+        <input type="radio" name="user${idx}Locked" value="unlock"><br>
+        <hr>
+        <label>Username</label>
+        <input type="text" name="user${idx}Username" value="${user.username}" disabled readonly>
+        
+        <div id="user${idx}Hidden" style="display:none">
+            <hr>
+            <label>Email:</label>
+            <input type="email" name="user${idx}Email" value="${user.email}" disabled readonly>
+            <label>Age:</label>
+            <input type="number" name="user${idx}Age" value="${user.age}" disabled readonly>
+        </div>
 
-    return element;
+        <button>Show more</button>
+    `;
+
+    const btn = div.querySelector('button');
+    const hiddenDiv = div.querySelector(`#user${idx}Hidden`);
+    const lockRadio = div.querySelector(`input[value="lock"]`);
+    const unlockRadio = div.querySelector(`input[value="unlock"]`);
+
+    btn.addEventListener('click', () => {
+
+        if (unlockRadio.checked) {
+            if (hiddenDiv.style.display === 'none') {
+
+                hiddenDiv.style.display = 'block';
+                btn.textContent = 'Hide it';
+
+            } else {
+
+                hiddenDiv.style.display = 'none';
+                btn.textContent = 'Show more';
+            }
+        }
+    });
+
+    lockRadio.addEventListener('change', () => {
+
+        hiddenDiv.style.display = 'none';
+        btn.textContent = 'Show more';
+    });
+
+    return div;
 }
