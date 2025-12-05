@@ -8,22 +8,25 @@ const loadBtn = document.getElementById('load-games');
 
 const divGamesList = document.getElementById('games-list');
 
+const URL = 'http://localhost:3030/jsonstore/games/';
+
+let selectedGameId = null;
+
 loadBtn.addEventListener('click', loadGames);
 addBtn.addEventListener('click', addGame);
-editBtn.addEventListener('click', editGame);
+editBtn.addEventListener('click', saveEditedGame);
 
-const DATA_URL = 'http://localhost:3030/jsonstore/games/';
-let selectGameId = null;
-
+// ================================
+// LOAD ALL GAMES
+// ================================
 async function loadGames() {
 
-    const gamesRes = await fetch(DATA_URL);
-    const gamesData = await gamesRes.json();
-    const gameArr = Object.values(gamesData);
+    const res = await fetch(URL);
+    const data = await res.json();
 
-    divGamesList.innerHTML = '';
+    divGamesList.replaceChildren();
 
-    gameArr.forEach(object => {
+    Object.values(data).forEach(game => {
 
         const gameDiv = document.createElement('div');
         gameDiv.classList.add('board-game');
@@ -31,17 +34,21 @@ async function loadGames() {
         const contentDiv = document.createElement('div');
         contentDiv.classList.add('content');
 
-        const nameParagraph = document.createElement('p');
-        nameParagraph.textContent = object.name;
+        const nameP = document.createElement('p');
+        nameP.textContent = game.name;
 
-        const playerParagraph = document.createElement('p');
-        playerParagraph.textContent = object.players;
+        const typeP = document.createElement('p');
+        typeP.textContent = game.type;
 
-        const typeParagraph = document.createElement('p');
-        typeParagraph.textContent = object.type;
+        const playersP = document.createElement('p');
+        playersP.textContent = game.players;
 
-        const divBtn = document.createElement('button');
-        divBtn.classList.add('buttons-container');
+        contentDiv.appendChild(nameP);
+        contentDiv.appendChild(typeP);
+        contentDiv.appendChild(playersP);
+
+        const btnContainer = document.createElement('div');
+        btnContainer.classList.add('buttons-container');
 
         const changeBtn = document.createElement('button');
         changeBtn.classList.add('change-btn');
@@ -51,93 +58,105 @@ async function loadGames() {
         deleteBtn.classList.add('delete-btn');
         deleteBtn.textContent = 'Delete';
 
-        contentDiv.appendChild(nameParagraph);
-        contentDiv.appendChild(playerParagraph);
-        contentDiv.appendChild(typeParagraph);
-
-        divBtn.appendChild(changeBtn);
-        divBtn.appendChild(deleteBtn);
+        btnContainer.appendChild(changeBtn);
+        btnContainer.appendChild(deleteBtn);
 
         gameDiv.appendChild(contentDiv);
-        gameDiv.appendChild(divBtn);
+        gameDiv.appendChild(btnContainer);
 
         divGamesList.appendChild(gameDiv);
+       
+        changeBtn.addEventListener('click', () => {
+            loadGameForEdit(game);
+        });
+        
+        deleteBtn.addEventListener('click', async () => {
 
-        changeBtn.addEventListener('click', editGame);
-        deleteBtn.addEventListener('click', deleteGame);
-
-        function editGame() {
-
-            nameInput.value = object.name;
-            typeInput.value = object.type;
-            playersInput.value = object.players;
-
-            editBtn.disabled = false;
-            addBtn.disabled = true;
-
-            selectGameId = object._id;
-
-        }
-
-        async function deleteGame() {
-            
-            await fetch(`${DATA_URL}/${object._id}`, {
+            await fetch(URL + game._id, {
                 method: 'DELETE',
             });
 
-            await loadGames();
-        }
-
+            loadGames();
+        });
     });
 }
 
+// ================================
+// LOAD GAME INTO FORM FOR EDITING
+// ================================
+function loadGameForEdit(game) {
+
+    nameInput.value = game.name;
+    typeInput.value = game.type;
+    playersInput.value = game.players;
+
+    selectedGameId = game._id;
+
+    editBtn.disabled = false;
+    addBtn.disabled = true;
+}
+
+// ================================
+// ADD NEW GAME (POST)
+// ================================
 async function addGame() {
 
-    const name = nameInput.value.trime();
+    const name = nameInput.value.trim();
     const type = typeInput.value.trim();
     const players = playersInput.value.trim();
 
-    await fetch(BaseDataURL, {
+    if (!name || !type || !players) return;
 
+    await fetch(URL, {
+        
         method: 'POST',
-        headers: {
-            'Content-Type': application/json
-        },
-        body: JSON.stringify({ name, type, players})
-    });
-
-    nameInput.value = '';
-    typeInput.value = '';
-    playersInput.value = '';
-
-    await loadGames();
-}
-
-async function editGame() {
-
-    const name = nameInput.value.trime();
-    const type = typeInput.value.trim();
-    const players = playersInput.value.trim();
-
-    await fetch(`${BaseDataURL}/${selectGameId}`, {
-
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, type, players })
     });
 
+    clearInputs();
+    loadGames();
+}
 
+// ================================
+// SAVE EDITED GAME (PUT)
+// ================================
+async function saveEditedGame() {
+
+    const name = nameInput.value.trim();
+    const type = typeInput.value.trim();
+    const players = playersInput.value.trim();
+
+    if (!name || !type || !players) return;
+
+    await fetch(URL + selectedGameId, {
+
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+
+            name,
+            type,
+            players,
+            _id: selectedGameId
+        })
+    });
+
+    clearInputs();
+
+    selectedGameId = null;
+    editBtn.disabled = true;
+    addBtn.disabled = false;
+
+    loadGames();
+}
+
+// ================================
+// CLEAR INPUT FIELDS
+// ================================
+function clearInputs() {
 
     nameInput.value = '';
     typeInput.value = '';
     playersInput.value = '';
-
-    selectGameId = null;
-
-    addBtn.disabled = false;
-    editBtn.disabled = true;
-
-    await loadGames();
 }
