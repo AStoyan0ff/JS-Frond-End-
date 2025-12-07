@@ -7,8 +7,8 @@ function solve() {
     const dateInput = document.getElementById("date");
     const saveBtn = document.getElementById("save");
 
-    const upcomingList = document.getElementById("upcoming-list");
-    const endedList = document.getElementById("events-list");
+    const upList = document.getElementById("upcoming-list");
+    const endList = document.getElementById("events-list");
     const deleteBtn = document.querySelector(".btn.delete");
 
     saveBtn.addEventListener("click", onSave);
@@ -22,7 +22,7 @@ function solve() {
         if (!name || !note || !date) return;
 
         const li = createItems(name, note, date);
-        upcomingList.appendChild(li);
+        upList.appendChild(li);
         
         eInput.value = "";
         noteInput.value = "";
@@ -81,7 +81,7 @@ function solve() {
             endArt.innerHTML = article.innerHTML;
 
             endLi.appendChild(endArt);
-            endedList.appendChild(endLi);
+            endList.appendChild(endLi);
 
             li.remove();
         });
@@ -90,6 +90,6 @@ function solve() {
     }
     
     deleteBtn.addEventListener("click", () => {
-        endedList.innerHTML = "";
+        endList.innerHTML = "";
     });
 }
